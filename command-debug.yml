@@ -1,0 +1,38 @@
+#About vars, args, register, when condition, command, debug for printing
+---
+- name: Create a file
+  hosts: localhost
+  vars: 
+    name: "GOKS"
+  tasks:
+    - name: Run command with arguments
+      command: touch goksNew.txt
+      args:
+        chdir: /home/gokhul/Desktop
+        creates: goksNew.txt
+      register: op
+
+    - name: Display output
+      debug:
+        var: op.stdout
+      when: ansible_verbosity >= 2
+
+    - name: Display name
+      debug:
+        msg: "Hey my name is {{name}}"
+      when: ansible_os_family == "Debian"
+
+    - name: "Status of docker"
+      command: systemctl is-active docker
+      register: statusOutput
+      ignore_errors: true
+
+    - name: Display status of docker
+      debug: 
+        var: statusOutput.stdout
+
+    - name: disable if enabled
+      ansible.builtin.service:
+        name: docker
+        state: started
+      when: statusOutput.stdout == "inactive"
