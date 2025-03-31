@@ -1,0 +1,21 @@
+---
+- name: Using replace
+  hosts: localhost
+  tasks:
+    - name: Replace a word
+      replace: 
+        path: /home/gokhul/Desktop/goks.txt
+        regexp: "blahblah"
+        replace: "OOOI cunt"
+    - name: remove a word
+      replace: 
+        path: /home/gokhul/Desktop/goks.txt
+        regexp: "here"
+        replace: ""
+    - name: replace a whole line
+      replace: 
+        path: /home/gokhul/Desktop/goks.txt
+        regexp: "it's britney .*"
+        replace: "it's britney bitch -by Michael Gary Scott"
+        backup: yes
+    
