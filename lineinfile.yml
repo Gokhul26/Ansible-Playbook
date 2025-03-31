@@ -1,0 +1,27 @@
+---
+- name: Using lineinfile module
+  hosts: localhost
+  tasks:
+    - name: Insert a line
+      ansible.builtin.lineinfile:
+        path: /home/gokhul/Desktop/goks.txt
+        line: "hell yeah!!!"
+        # create: yes  
+
+    - name: Delete a line
+      ansible.builtin.lineinfile:
+        path: /home/gokhul/Desktop/goks.txt
+        regexp: "^hello" #if line starts with this
+        state: absent
+
+    - name: Insert a line after 'hello'
+      ansible.builtin.lineinfile:
+        path: /home/gokhul/Desktop/goks.txt
+        line: "blahblah"
+        insertafter: "^hello"
+
+    - name: Insert a line before 'here'
+      ansible.builtin.lineinfile:
+        path: /home/gokhul/Desktop/goks.txt
+        line: "BOOO BITCH"
+        insertbefore: "^goks"
