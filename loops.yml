@@ -1,0 +1,54 @@
+---
+- name: Using loops
+  hosts: localhost
+  become: yes
+  vars: 
+    item: "Hey yooo"
+  tasks:
+    - name: Installing packages
+      apt:
+        name: "{{user_item}}"
+        state: present
+      loop:
+        - httpd
+        - nginx
+      loop_control:
+        loop_var: user_item
+    - name: Delay 5 seconds gap
+      ansible.builtin.pause:
+        seconds: 5
+      loop:
+        - 1
+
+# ---
+# - name: Using loops
+#   hosts: localhost
+#   become: yes
+#   tasks:
+#     - name: Installing packages
+#       apt:
+#         name: "{{ item }}"
+#         state: absent
+#       loop:
+#         - apache2
+#         - nginx
+#         - mysql-server
+#       register: package_install_results
+
+#     - name: Display installed packages
+#       debug:
+#         msg: "Package: {{ item.item }} | Installed: {{ 'Yes' if not item.changed else 'Updated' }} | Failed: {{ item.failed | default('No') }}"
+#       loop: "{{ package_install_results.results }}"
+#     - name: Check if packages are installed
+#       shell: dpkg -l | grep -w "{{ item }}" || echo 'not installed'
+#       loop:
+#         - apache2
+#         - nginx
+#         - mysql-server
+#       register: package_status
+#       changed_when: false
+
+#     - name: Display package installation status
+#       debug:
+#         msg: "Package: {{ item.item }} | Installed: {{ 'Yes' if 'not installed' not in item.stdout else 'No' }}"
+#       loop: "{{ package_status.results }}"
